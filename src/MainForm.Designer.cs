@@ -34,9 +34,9 @@
             this.labelMessages = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutSMSExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textBoxSearch = new System.Windows.Forms.TextBox();
             this.buttonSearch = new System.Windows.Forms.Button();
@@ -113,6 +113,19 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // openFolderToolStripMenuItem
+            // 
+            this.openFolderToolStripMenuItem.Name = "openFolderToolStripMenuItem";
+            this.openFolderToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.openFolderToolStripMenuItem.Text = "Open Folder";
+            this.openFolderToolStripMenuItem.Click += new System.EventHandler(this.openFolderToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -121,23 +134,10 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.aboutToolStripMenuItem.Text = "About";
             // 
-            // openFolderToolStripMenuItem
-            // 
-            this.openFolderToolStripMenuItem.Name = "openFolderToolStripMenuItem";
-            this.openFolderToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.openFolderToolStripMenuItem.Text = "Open Folder";
-            this.openFolderToolStripMenuItem.Click += new System.EventHandler(this.openFolderToolStripMenuItem_Click);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            // 
             // aboutSMSExplorerToolStripMenuItem
             // 
             this.aboutSMSExplorerToolStripMenuItem.Name = "aboutSMSExplorerToolStripMenuItem";
-            this.aboutSMSExplorerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutSMSExplorerToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.aboutSMSExplorerToolStripMenuItem.Text = "About SMSExplorer";
             // 
             // textBoxSearch
@@ -195,7 +195,6 @@
             this.labelCount.Size = new System.Drawing.Size(38, 13);
             this.labelCount.TabIndex = 11;
             this.labelCount.Text = "Count:";
-            this.labelCount.Click += new System.EventHandler(this.label1_Click);
             // 
             // labelCountData
             // 
@@ -205,7 +204,6 @@
             this.labelCountData.Size = new System.Drawing.Size(39, 13);
             this.labelCountData.TabIndex = 12;
             this.labelCountData.Text = "<num>";
-            this.labelCountData.Click += new System.EventHandler(this.label2_Click);
             // 
             // labelMsgCountData
             // 

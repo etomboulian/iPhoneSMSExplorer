@@ -47,71 +47,7 @@ namespace iPhoneMessageExplorer
             displayCurrentConversationMessages();
         }
 
-        // Builds a string out of the messages in the message list for the current selected conversation
-        private void displayCurrentConversationMessages()
-        {
-            if (conversationVM.SelectedConversation.MessagesString is null)
-            {
-                // buffer to hold the messages text
-                StringBuilder displayMessages = new StringBuilder();
-
-                // if there exist some messages in the list, then build the message text
-                if (!(conversationVM.SelectedConversation.Messages is null))
-                {
-                    foreach (var item in conversationVM.SelectedConversation.Messages)
-                    {
-
-                        if (item.FromMe)
-                        {
-                            displayMessages.Append("> Sent | ");
-                        }
-                        else
-                        {
-                            displayMessages.Append("> Received | ");
-                        }
-                        displayMessages.Append(item.DateStamp.ToShortDateString());
-                        displayMessages.Append(" | ");
-                        displayMessages.AppendLine(item.DateStamp.ToShortTimeString());
-                        displayMessages.AppendLine(item.Text);
-                        displayMessages.AppendLine("\n");
-                    }
-                    string messagesString = displayMessages.ToString();
-                    conversationVM.SelectedConversation.MessagesString = messagesString;
-                    // replace the text of the textbox with the generated message text
-                    textBoxMessages.Text = messagesString;
-                }
-                // if no messages exist indicate so with an appropriate message
-                else
-                {
-                    textBoxMessages.Text = "No messages to display";
-                }
-            } 
-            else
-            {
-                textBoxMessages.Text = conversationVM.SelectedConversation.MessagesString;
-            }
-        }
-
-        private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            string folderPath = "";
-            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
-            {
-                folderPath = folderBrowserDialog.SelectedPath;
-            }
-            validateFolderPath(folderPath);
-        }
-
-        private bool validateFolderPath(string folderPath)
-        {
-            if(!File.Exists(folderPath))
-            {
-                return false;
-            }
-            return true;
-        }
-
+        #region BUTTON_ACTIONS
         private void buttonSearch_Click(object sender, EventArgs e)
         {
             string searchText = textBoxSearch.Text;
@@ -195,6 +131,23 @@ namespace iPhoneMessageExplorer
             //textBoxSearch.Text = "";
         }
 
+        #endregion
+
+        #region OPEN_FOLDER_ACTION
+        private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string folderPath = "";
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+            if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                folderPath = folderBrowserDialog.SelectedPath;
+            }
+            validateFolderPath(folderPath);
+        }
+        #endregion
+
+        #region HELPER_FUNCTIONS
+
         private void setSearchButtonsVisible(bool visible)
         {
             buttonNext.Enabled = visible;
@@ -204,14 +157,60 @@ namespace iPhoneMessageExplorer
             textBoxSearch.Enabled = !visible;
         }
 
-        private void label2_Click(object sender, EventArgs e)
+        private bool validateFolderPath(string folderPath)
         {
-
+            if (!File.Exists(folderPath))
+            {
+                return false;
+            }
+            return true;
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        // Builds a string out of the messages in the message list for the current selected conversation
+        private void displayCurrentConversationMessages()
         {
+            if (conversationVM.SelectedConversation.MessagesString is null)
+            {
+                // buffer to hold the messages text
+                StringBuilder displayMessages = new StringBuilder();
 
+                // if there exist some messages in the list, then build the message text
+                if (!(conversationVM.SelectedConversation.Messages is null))
+                {
+                    foreach (var item in conversationVM.SelectedConversation.Messages)
+                    {
+
+                        if (item.FromMe)
+                        {
+                            displayMessages.Append("> Sent | ");
+                        }
+                        else
+                        {
+                            displayMessages.Append("> Received | ");
+                        }
+                        displayMessages.Append(item.DateStamp.ToShortDateString());
+                        displayMessages.Append(" | ");
+                        displayMessages.AppendLine(item.DateStamp.ToShortTimeString());
+                        displayMessages.AppendLine(item.Text);
+                        displayMessages.AppendLine("\n");
+                    }
+                    string messagesString = displayMessages.ToString();
+                    conversationVM.SelectedConversation.MessagesString = messagesString;
+                    // replace the text of the textbox with the generated message text
+                    textBoxMessages.Text = messagesString;
+                }
+                // if no messages exist indicate so with an appropriate message
+                else
+                {
+                    textBoxMessages.Text = "No messages to display";
+                }
+            }
+            else
+            {
+                textBoxMessages.Text = conversationVM.SelectedConversation.MessagesString;
+            }
         }
+
+        #endregion
     }
 }

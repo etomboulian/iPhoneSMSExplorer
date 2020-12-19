@@ -14,12 +14,18 @@ namespace iPhoneMessageExplorer
 {
     class ConversationViewModel : INotifyPropertyChanged
     {
+        #region ImplementINotifyPropertyChanged
+
         // Implement the INofityPropertyChanged Interface
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
+        #endregion
+
+        #region SelectedConversationProperty
 
         // Create the conversations list and the corresponding binding source
         private readonly SMSConversationList conversations;
@@ -46,11 +52,22 @@ namespace iPhoneMessageExplorer
                 OnPropertyChanged("SelectedConversationMessageCount");
             }
         }
+
+        #endregion
+
+        #region CalculatedProperties
+
         public int ConversationCount => Conversations.Count;
         public int SelectedConversationMessageCount => SelectedConversation.Messages.Count;
 
+        #endregion
+
+        #region SearchMessageProperties
+        
         public MatchCollection SearchMatches { get; set; }
         public int SearchPosition { get; set; }
+        
+        #endregion
 
         // Conversation ViewModel Constructor
         public ConversationViewModel()
