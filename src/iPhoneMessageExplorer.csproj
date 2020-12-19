@@ -77,6 +77,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\SMSConversationList.cs" />
+    <Compile Include="UI\AboutDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\AboutDialog.Designer.cs">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\ConversationViewModel.cs" />
     <Compile Include="Data\SMSRepository.cs" />
     <Compile Include="UI\MainForm.cs">
@@ -90,6 +96,9 @@
     <Compile Include="Common\SMSConversation.cs" />
     <Compile Include="Common\SMSMessage.cs" />
     <Compile Include="Common\SMSMessageList.cs" />
+    <EmbeddedResource Include="UI\AboutDialog.resx">
+      <DependentUpon>AboutDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -1,4 +1,5 @@
 ﻿using iPhoneMessageExplorer.Common;
+using iPhoneMessageExplorer.UI;
 using System;
 using System.Data;
 using System.IO;
@@ -182,6 +183,8 @@ namespace iPhoneMessageExplorer
 
         private void aboutSMSExplorerToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            AboutDialog dialog = new AboutDialog();
+            dialog.Show();
             // show the about dialog
         }
         #endregion

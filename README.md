@@ -7,6 +7,7 @@ Done:
 - Search the message pane for a specific string 
 - Export Messages from a specific conversation to a .csv 
 - Implement ToolStrip File > Exit 
+- Implement ToolStrip About > About Program Dialog
 
 Todo:
 - Reorganize repository methods to accept the file path parameter for db file
