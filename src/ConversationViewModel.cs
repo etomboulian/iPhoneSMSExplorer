@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using System.IO;
 
 namespace iPhoneMessageExplorer
 {
@@ -53,20 +54,107 @@ namespace iPhoneMessageExplorer
             }
         }
 
+        public void SetSelectedConversation(int index)
+        {
+            SelectedConversation = ((SMSConversationList)Conversations.DataSource)[index];
+        }
+
+        public string getCurrentConversationMessages()
+        {
+            if (SelectedConversation.MessagesString is null)
+            {
+                // buffer to hold the messages text
+                StringBuilder displayMessages = new StringBuilder();
+
+                // if there exist some messages in the list, then build the message text
+                if (!(SelectedConversation.Messages is null))
+                {
+                    foreach (var item in SelectedConversation.Messages)
+                    {
+
+                        if (item.FromMe)
+                        {
+                            displayMessages.Append("> Sent | ");
+                        }
+                        else
+                        {
+                            displayMessages.Append("> Received | ");
+                        }
+                        displayMessages.Append(item.DateStamp.ToShortDateString());
+                        displayMessages.Append(" | ");
+                        displayMessages.AppendLine(item.DateStamp.ToShortTimeString());
+                        displayMessages.AppendLine(item.Text);
+                        displayMessages.AppendLine("\n");
+                    }
+                    string messagesString = displayMessages.ToString();
+                    SelectedConversation.MessagesString = messagesString;
+                    // replace the text of the textbox with the generated message text
+                    return messagesString;
+                }
+                // if no messages exist indicate so with an appropriate message
+                else
+                {
+                    return "No messages to display";
+                }
+            }
+            else
+            {
+                return SelectedConversation.MessagesString;
+            }
+        }
+
         #endregion
 
-        #region CalculatedProperties
+        #region CalculatedConversationProperties
 
         public int ConversationCount => Conversations.Count;
         public int SelectedConversationMessageCount => SelectedConversation.Messages.Count;
 
         #endregion
 
-        #region SearchMessageProperties
+        #region SearchMessage
         
         public MatchCollection SearchMatches { get; set; }
         public int SearchPosition { get; set; }
-        
+
+        public bool SearchMessages(string searchText, string searchSpace)
+        {
+            // Get the list of matches
+            MatchCollection matches = Regex.Matches(searchSpace, searchText);
+
+            // Set the match list in the ViewModel and current position
+            SearchMatches = matches;
+            SearchPosition = 0;
+            return SearchMatches.Count > 0;
+        }
+
+        public void ClearSearch()
+        {
+            SearchMatches = null;
+            SearchPosition = 0;
+        }
+
+        #endregion
+
+        #region ExportMessages
+        // put the export messages core code in here (move out of mainform)
+        #endregion
+
+        #region OpenFileOrFolder
+        // put the open file code and properties in here
+        public string SelectedFolderPath { get; private set; }
+
+        public bool SetSelectedFolderPath(string folderPath) 
+        {
+            bool success = false;
+            if(validateFolderPath(folderPath))
+            {
+                SelectedFolderPath = folderPath;
+                success = true;
+            }
+            return success;
+        }
+
         #endregion
 
         // Conversation ViewModel Constructor
@@ -74,10 +162,28 @@ namespace iPhoneMessageExplorer
         {
             // populate the conversation list and setup the BindingSource
             conversations = SMSRepository.GetConversations();
+
+            // create a BindingSource and point it at the retrieved conversation list
             Conversations = new BindingSource();
             Conversations.DataSource = conversations;
+
             // set the selected conversation to an empty object on start
             SelectedConversation = new SMSConversation();
+
+            // set the current db file to an empty object or null on start
         }
+
+        #region HelperFunctions
+
+        private bool validateFolderPath(string folderPath)
+        {
+            if (!File.Exists(folderPath))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        #endregion
     }
 }

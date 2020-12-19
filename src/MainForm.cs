@@ -42,9 +42,12 @@ namespace iPhoneMessageExplorer
             // if the selected index value is a valid one (ie not -1)
             if (index >= 0)
             {
-                conversationVM.SelectedConversation = ((SMSConversationList)conversationVM.Conversations.DataSource)[index];
+                conversationVM.SetSelectedConversation(index);
             }
-            displayCurrentConversationMessages();
+
+            // set the conversation pane content to the messages for the selected conversation
+            string messageText = conversationVM.getCurrentConversationMessages();
+            textBoxMessages.Text = messageText;
         }
 
         #region BUTTON_ACTIONS
@@ -58,13 +61,8 @@ namespace iPhoneMessageExplorer
                 return;
             }
 
-            // Get the list of matches
-            MatchCollection matches = Regex.Matches(textBoxMessages.Text, searchText);
-
-            // Set the match list in the ViewModel and current position
-            conversationVM.SearchMatches = matches;
-            conversationVM.SearchPosition = 0;
-            if (conversationVM.SearchMatches.Count > 0)
+            // Search for the string in the message text, focus on it if found
+            if(conversationVM.SearchMessages(searchText, textBoxMessages.Text))
             {
                 // Highlight the match at the current position
                 Match match = conversationVM.SearchMatches[conversationVM.SearchPosition];
@@ -124,25 +122,45 @@ namespace iPhoneMessageExplorer
         {
             if (conversationVM.SearchMatches.Count > 0)
             {
-                conversationVM.SearchMatches = null;
-                conversationVM.SearchPosition = 0;
+                conversationVM.ClearSearch();
                 setSearchButtonsVisible(false);
             }
-            //textBoxSearch.Text = "";
+        }
+
+        private void buttonExportMessages_Click(object sender, EventArgs e)
+        {
+            if(!(conversationVM.SelectedConversation.Messages is null))
+            {
+                // conversationVM.ExportCurrentConversationMessages();
+                // get back a csv file to save (or perhaps just write to default location with default file name)
+                MessageBox.Show("A Work in progress!");
+            }
+            else
+            {
+                MessageBox.Show("No Messages to Export");
+            }
         }
 
         #endregion
 
-        #region OPEN_FOLDER_ACTION
+        #region OpenFolderMenuAction
         private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string folderPath = "";
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+            // show the open folder dialog
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
+                // get the selected folder path from the open folder dialog
                 folderPath = folderBrowserDialog.SelectedPath;
             }
-            validateFolderPath(folderPath);
+            
+            // try to set the selected folder path and show an error if it fails
+            if(!conversationVM.SetSelectedFolderPath(folderPath))
+            {
+                MessageBox.Show("Unable to open the selected folder as it does not validate.");
+            }
+            // maybe do more after this to trigger data loading?
         }
         #endregion
 
@@ -157,60 +175,8 @@ namespace iPhoneMessageExplorer
             textBoxSearch.Enabled = !visible;
         }
 
-        private bool validateFolderPath(string folderPath)
-        {
-            if (!File.Exists(folderPath))
-            {
-                return false;
-            }
-            return true;
-        }
-
-        // Builds a string out of the messages in the message list for the current selected conversation
-        private void displayCurrentConversationMessages()
-        {
-            if (conversationVM.SelectedConversation.MessagesString is null)
-            {
-                // buffer to hold the messages text
-                StringBuilder displayMessages = new StringBuilder();
-
-                // if there exist some messages in the list, then build the message text
-                if (!(conversationVM.SelectedConversation.Messages is null))
-                {
-                    foreach (var item in conversationVM.SelectedConversation.Messages)
-                    {
-
-                        if (item.FromMe)
-                        {
-                            displayMessages.Append("> Sent | ");
-                        }
-                        else
-                        {
-                            displayMessages.Append("> Received | ");
-                        }
-                        displayMessages.Append(item.DateStamp.ToShortDateString());
-                        displayMessages.Append(" | ");
-                        displayMessages.AppendLine(item.DateStamp.ToShortTimeString());
-                        displayMessages.AppendLine(item.Text);
-                        displayMessages.AppendLine("\n");
-                    }
-                    string messagesString = displayMessages.ToString();
-                    conversationVM.SelectedConversation.MessagesString = messagesString;
-                    // replace the text of the textbox with the generated message text
-                    textBoxMessages.Text = messagesString;
-                }
-                // if no messages exist indicate so with an appropriate message
-                else
-                {
-                    textBoxMessages.Text = "No messages to display";
-                }
-            }
-            else
-            {
-                textBoxMessages.Text = conversationVM.SelectedConversation.MessagesString;
-            }
-        }
-
         #endregion
+
+
     }
 }

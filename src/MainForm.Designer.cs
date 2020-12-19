@@ -48,7 +48,7 @@
             this.labelMsgCountData = new System.Windows.Forms.Label();
             this.labelMsgCount = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buttonExportMessages = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -198,19 +198,17 @@
             // 
             // labelCountData
             // 
-            this.labelCountData.AutoSize = true;
             this.labelCountData.Location = new System.Drawing.Point(209, 367);
             this.labelCountData.Name = "labelCountData";
-            this.labelCountData.Size = new System.Drawing.Size(39, 13);
+            this.labelCountData.Size = new System.Drawing.Size(20, 13);
             this.labelCountData.TabIndex = 12;
             this.labelCountData.Text = "<num>";
             // 
             // labelMsgCountData
             // 
-            this.labelMsgCountData.AutoSize = true;
             this.labelMsgCountData.Location = new System.Drawing.Point(344, 367);
             this.labelMsgCountData.Name = "labelMsgCountData";
-            this.labelMsgCountData.Size = new System.Drawing.Size(39, 13);
+            this.labelMsgCountData.Size = new System.Drawing.Size(41, 13);
             this.labelMsgCountData.TabIndex = 14;
             this.labelMsgCountData.Text = "<num>";
             // 
@@ -232,21 +230,22 @@
             this.button1.Text = "Open File";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // buttonExportMessages
             // 
-            this.button2.Location = new System.Drawing.Point(660, 370);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(117, 24);
-            this.button2.TabIndex = 16;
-            this.button2.Text = "Export Messages";
-            this.button2.UseVisualStyleBackColor = true;
+            this.buttonExportMessages.Location = new System.Drawing.Point(660, 370);
+            this.buttonExportMessages.Name = "buttonExportMessages";
+            this.buttonExportMessages.Size = new System.Drawing.Size(117, 24);
+            this.buttonExportMessages.TabIndex = 16;
+            this.buttonExportMessages.Text = "Export Messages";
+            this.buttonExportMessages.UseVisualStyleBackColor = true;
+            this.buttonExportMessages.Click += new System.EventHandler(this.buttonExportMessages_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 404);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.buttonExportMessages);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.labelMsgCountData);
             this.Controls.Add(this.labelMsgCount);
@@ -295,7 +294,7 @@
         private System.Windows.Forms.Label labelMsgCountData;
         private System.Windows.Forms.Label labelMsgCount;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonExportMessages;
     }
 }
 
