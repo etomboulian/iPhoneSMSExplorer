@@ -14,7 +14,7 @@ namespace iPhoneMessageExplorer.Data
     {
         // Set the database filename and connection string values
         private static string fileName = "3d0d7e5fb2ce288813306e4d4636395e047a3d28";
-        private static string connString = $"Data Source=C:\\Users\\etomb\\source\\repos\\iPhoneMessageExplorer\\src\\{fileName}";
+        private static string connString = $"Data Source=C:\\Users\\etomb\\source\\repos\\iPhoneMessageExplorer\\src\\db_files\\{fileName}";
 
         /// <summary>
         /// Gets the full list of SMS conversations from the iPhone SMS db file

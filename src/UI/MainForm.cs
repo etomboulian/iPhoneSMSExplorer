@@ -20,11 +20,11 @@ namespace iPhoneMessageExplorer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            setBindings();
-            setSearchButtonsVisible(false);
+            SetBindings();
+            SetSearchButtonsVisible(false);
         }
 
-        private void setBindings()
+        private void SetBindings()
         {
             // set bindings for the conversations listbox
             listBoxConversations.DataSource = conversationVM.Conversations;
@@ -46,8 +46,7 @@ namespace iPhoneMessageExplorer
             }
 
             // set the conversation pane content to the messages for the selected conversation
-            string messageText = conversationVM.getCurrentConversationMessages();
-            textBoxMessages.Text = messageText;
+            textBoxMessages.Text = conversationVM.getCurrentConversationMessages();
         }
 
         #region BUTTON_ACTIONS
@@ -70,7 +69,7 @@ namespace iPhoneMessageExplorer
                 textBoxMessages.SelectionLength = searchText.Length;
                 textBoxMessages.Focus();
                 textBoxMessages.ScrollToCaret();
-                setSearchButtonsVisible(true);
+                SetSearchButtonsVisible(true);
             }
             else
             {
@@ -123,7 +122,7 @@ namespace iPhoneMessageExplorer
             if (conversationVM.SearchMatches.Count > 0)
             {
                 conversationVM.ClearSearch();
-                setSearchButtonsVisible(false);
+                SetSearchButtonsVisible(false);
             }
         }
 
@@ -157,7 +156,7 @@ namespace iPhoneMessageExplorer
 
         #endregion
 
-        #region OpenFolderMenuAction
+        #region ToolStripMenuAction
         private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string folderPath = "";
@@ -176,11 +175,20 @@ namespace iPhoneMessageExplorer
             }
             // maybe do more after this to trigger data loading?
         }
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void aboutSMSExplorerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // show the about dialog
+        }
         #endregion
 
         #region HELPER_FUNCTIONS
 
-        private void setSearchButtonsVisible(bool visible)
+        private void SetSearchButtonsVisible(bool visible)
         {
             buttonNext.Enabled = visible;
             buttonPrevious.Enabled = visible;
@@ -189,7 +197,9 @@ namespace iPhoneMessageExplorer
             textBoxSearch.Enabled = !visible;
         }
 
+
         #endregion
+
 
     }
 }
