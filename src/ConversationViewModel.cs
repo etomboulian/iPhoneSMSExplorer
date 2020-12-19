@@ -138,6 +138,34 @@ namespace iPhoneMessageExplorer
 
         #region ExportMessages
         // put the export messages core code in here (move out of mainform)
+        public bool ExportCurrentConversationMessages(string outFilePath)
+        {
+            StringBuilder csvData = new StringBuilder();
+            csvData.AppendLine("Date,Time,Status,Message"); // header row
+            foreach (var message in SelectedConversation.Messages)
+            {
+                string status = (message.FromMe) ? "Sent" : "Received";
+                string messageText = message.Text.Replace('\n', ' ');
+                messageText = "\"" + messageText + "\"";
+                csvData.AppendLine($"{message.DateStamp.ToShortDateString()}," +
+                                    $"{message.DateStamp.ToLongTimeString()}," +
+                                    $"{status}," +
+                                    $"{messageText}");
+            }
+
+            try
+            {
+                File.WriteAllText(outFilePath, csvData.ToString());
+                return true;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return false;
+        }
+
         #endregion
 
         #region OpenFileOrFolder

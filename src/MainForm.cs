@@ -131,9 +131,23 @@ namespace iPhoneMessageExplorer
         {
             if(!(conversationVM.SelectedConversation.Messages is null))
             {
-                // conversationVM.ExportCurrentConversationMessages();
-                // get back a csv file to save (or perhaps just write to default location with default file name)
-                MessageBox.Show("A Work in progress!");
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "CSV File|*.csv";
+                saveFileDialog.Title = "Save Messages";
+                saveFileDialog.ShowDialog();
+
+                if (saveFileDialog.FileName != "")
+                {
+                    // Write out, but show an error message if the write failed
+                    if (!conversationVM.ExportCurrentConversationMessages(saveFileDialog.FileName))
+                    {
+                        MessageBox.Show("Unable to save file.");
+                    }
+                }
+                else 
+                {
+                    MessageBox.Show("Unable to get the filePath from the saveFileDialog");
+                }
             }
             else
             {
@@ -176,7 +190,6 @@ namespace iPhoneMessageExplorer
         }
 
         #endregion
-
 
     }
 }
