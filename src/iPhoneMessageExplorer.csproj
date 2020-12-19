@@ -77,12 +77,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\SMSConversationList.cs" />
-    <Compile Include="ConversationViewModel.cs" />
+    <Compile Include="UI\ConversationViewModel.cs" />
     <Compile Include="Data\SMSRepository.cs" />
-    <Compile Include="MainForm.cs">
+    <Compile Include="UI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="UI\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -90,7 +90,7 @@
     <Compile Include="Common\SMSConversation.cs" />
     <Compile Include="Common\SMSMessage.cs" />
     <Compile Include="Common\SMSMessageList.cs" />
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="UI\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

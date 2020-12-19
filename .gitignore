@@ -5,6 +5,7 @@
 
 3d0d7e5fb2*
 *.db
+src/db_files
 
 # User-specific files
 *.rsuser
