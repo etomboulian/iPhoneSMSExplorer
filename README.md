@@ -6,3 +6,5 @@
 - Search the message pane for a specific string
 - Export Messages from a specific conversation to a .csv
 
+## Not yet finished; can only read a local db file
+
