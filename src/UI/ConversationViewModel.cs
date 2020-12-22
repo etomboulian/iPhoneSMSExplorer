@@ -1,17 +1,17 @@
 ﻿using iPhoneMessageExplorer.Data;
+using iPhoneMessageExplorer.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using iPhoneMessageExplorer.Common;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.IO;
 
-namespace iPhoneMessageExplorer
+namespace iPhoneMessageExplorer.UI
 {
     class ConversationViewModel : INotifyPropertyChanged
     {
@@ -40,7 +40,7 @@ namespace iPhoneMessageExplorer
             {
                 return selectedConversation;
             }
-            set
+            private set
             {
                 // if there are no messages, get the messages for the new selectedConversation
                 if (value.Messages is null)
@@ -210,7 +210,7 @@ namespace iPhoneMessageExplorer
 
         #endregion
 
-        #region HelperFunctions
+        #region Helper Functions
 
         /// <summary>
         /// Validates the selected Database file to ensure that it is suitable to attempt to open

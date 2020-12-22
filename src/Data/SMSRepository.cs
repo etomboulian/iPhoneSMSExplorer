@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using iPhoneMessageExplorer.Common;
 using Microsoft.Data.Sqlite;
-using SQLitePCL;
 
 namespace iPhoneMessageExplorer.Data
 {
@@ -52,7 +51,7 @@ namespace iPhoneMessageExplorer.Data
                     {
                         conn.Open();
                     }
-                    catch (Exception ex)
+                    catch 
                     {
                         throw new SqliteException("Unable to open connection to db file", 1);
                     }
@@ -71,7 +70,7 @@ namespace iPhoneMessageExplorer.Data
                         string serviceName;
                         int handleId;
                         int totalMessages;
-                        DateTime lastMessageDate;
+                        // DateTime lastMessageDate;   // perhaps bring this back in later
                         SMSMessageList messages = null;
 
                         // for each row returned by the sql reader
@@ -138,7 +137,7 @@ namespace iPhoneMessageExplorer.Data
                 {
                     conn.Open();
                 }
-                catch (Exception ex)
+                catch 
                 {
                     throw new SqliteException("Unable to open connection to db file", 1);
                 }

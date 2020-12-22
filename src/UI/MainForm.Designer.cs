@@ -1,4 +1,4 @@
-﻿namespace iPhoneMessageExplorer
+﻿namespace iPhoneMessageExplorer.UI
 {
     partial class MainForm
     {

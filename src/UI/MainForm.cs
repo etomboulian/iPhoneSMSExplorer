@@ -1,6 +1,4 @@
-﻿using iPhoneMessageExplorer.Common;
-using iPhoneMessageExplorer.UI;
-using System;
+﻿using System;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -8,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
-namespace iPhoneMessageExplorer
+namespace iPhoneMessageExplorer.UI
 {
     public partial class MainForm : Form
     {
@@ -219,6 +217,7 @@ namespace iPhoneMessageExplorer
             }
             // maybe do more after this to trigger data loading?
         }
+
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -245,6 +244,5 @@ namespace iPhoneMessageExplorer
         }
 
         #endregion
-        
     }
 }
