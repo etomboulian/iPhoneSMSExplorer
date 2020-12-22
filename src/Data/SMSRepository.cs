@@ -14,18 +14,21 @@ namespace iPhoneMessageExplorer.Data
     {
         // Set the database filename and connection string values
         private static string fileName = "3d0d7e5fb2ce288813306e4d4636395e047a3d28";
-        private static string connString = $"Data Source=C:\\Users\\etomb\\source\\repos\\iPhoneMessageExplorer\\src\\db_files\\{fileName}";
+        public static string connString = $"Data Source=C:\\Users\\etomb\\source\\repos\\iPhoneMessageExplorer\\src\\db_files\\{fileName}";
 
         /// <summary>
         /// Gets the full list of SMS conversations from the iPhone SMS db file
         /// </summary>
         /// <returns>A populated list of the SMS Conversations in the SMS DB file</returns>
-        public static SMSConversationList GetConversations()
+        public static SMSConversationList GetConversations(string dbFilePath = null)
         {
-            // setup the conversation list and sql
             SMSConversationList conversations = new SMSConversationList();
+            if (!(dbFilePath is null))
+            {
+                // setup the conversation list and sql
+                
 
-            string sql = @"select 
+                string sql = @"select 
                         c.ROWID, 
                         c.guid, 
                         c.chat_identifier, 
@@ -39,74 +42,75 @@ namespace iPhoneMessageExplorer.Data
                         left join message m on cmj.message_id = m.ROWID
                         group by c.ROWID, c.guid, c.chat_identifier, c.service_name";
 
-            //string sql = @"select distinct c.ROWID, c.guid, c.chat_identifier, c.service_name, max(date) from chat c
-            //                join message m on c.ROWID = m.handle_id
-            //                group by c.ROWID, c.guid, c.chat_identifier, c.service_name";
+                //string sql = @"select distinct c.ROWID, c.guid, c.chat_identifier, c.service_name, max(date) from chat c
+                //                join message m on c.ROWID = m.handle_id
+                //                group by c.ROWID, c.guid, c.chat_identifier, c.service_name";
 
-            // Create and open the connection to the sqlite db
-            using (var conn = new SqliteConnection(connString))
-            {   
-                try
+                // Create and open the connection to the sqlite db
+                using (var conn = new SqliteConnection(connString))
                 {
-                    conn.Open();
-                }
-                catch (Exception ex)
-                {
-                    throw new SqliteException("Unable to open connection to db file", 1);
-                }
-
-                // Create the sql command and assign the command text
-                SqliteCommand cmd = conn.CreateCommand();
-                cmd.CommandText = sql;
-
-                // Execute the command and read the results into new SMSConversation objects
-                using (SqliteDataReader reader = cmd.ExecuteReader())
-                {
-                    // create variables to hold the return results of each row
-                    int rowId;
-                    string guid;
-                    string chatIdentifier;
-                    string serviceName;
-                    int handleId;
-                    int totalMessages;
-                    DateTime lastMessageDate;
-                    SMSMessageList messages = null;
-
-                    // for each row returned by the sql reader
-                    while (reader.Read())
+                    try
                     {
-                        // get the data pieces if the values exist in the database
-                        rowId = (!reader.IsDBNull(0)) ? reader.GetInt32(0) : 0;
-                        guid = (!reader.IsDBNull(reader.GetOrdinal("guid"))) ? reader["guid"] as string : null;
-                        chatIdentifier = (!reader.IsDBNull(reader.GetOrdinal("chat_identifier"))) ? reader["chat_identifier"] as string : null;
-                        serviceName = (!reader.IsDBNull(reader.GetOrdinal("service_name"))) ? reader["service_name"] as string : null;
-                        handleId = (!reader.IsDBNull(reader.GetOrdinal("handle_id"))) ? reader.GetInt32(reader.GetOrdinal("handle_id")) : 0;
-                        totalMessages = (!reader.IsDBNull(reader.GetOrdinal("totalMessages"))) ? reader.GetInt32(reader.GetOrdinal("totalMessages")) : 0;
+                        conn.Open();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new SqliteException("Unable to open connection to db file", 1);
+                    }
 
-                        // crate a new conversation object
-                        SMSConversation conversation = new SMSConversation
-                        {
-                            RowId = rowId,
-                            Guid = guid,
-                            ChatIdentifier = chatIdentifier,
-                            ServiceName = serviceName,
-                            HandleId = handleId,
-                            Messages = messages,
-                            TotalMessages = totalMessages
-                        };
+                    // Create the sql command and assign the command text
+                    SqliteCommand cmd = conn.CreateCommand();
+                    cmd.CommandText = sql;
 
-                        if (conversation.TotalMessages > 0)
+                    // Execute the command and read the results into new SMSConversation objects
+                    using (SqliteDataReader reader = cmd.ExecuteReader())
+                    {
+                        // create variables to hold the return results of each row
+                        int rowId;
+                        string guid;
+                        string chatIdentifier;
+                        string serviceName;
+                        int handleId;
+                        int totalMessages;
+                        DateTime lastMessageDate;
+                        SMSMessageList messages = null;
+
+                        // for each row returned by the sql reader
+                        while (reader.Read())
                         {
-                            // add the new conversation to the list of conversations
-                            conversations.Add(conversation);
+                            // get the data pieces if the values exist in the database
+                            rowId = (!reader.IsDBNull(0)) ? reader.GetInt32(0) : 0;
+                            guid = (!reader.IsDBNull(reader.GetOrdinal("guid"))) ? reader["guid"] as string : null;
+                            chatIdentifier = (!reader.IsDBNull(reader.GetOrdinal("chat_identifier"))) ? reader["chat_identifier"] as string : null;
+                            serviceName = (!reader.IsDBNull(reader.GetOrdinal("service_name"))) ? reader["service_name"] as string : null;
+                            handleId = (!reader.IsDBNull(reader.GetOrdinal("handle_id"))) ? reader.GetInt32(reader.GetOrdinal("handle_id")) : 0;
+                            totalMessages = (!reader.IsDBNull(reader.GetOrdinal("totalMessages"))) ? reader.GetInt32(reader.GetOrdinal("totalMessages")) : 0;
+
+                            // crate a new conversation object
+                            SMSConversation conversation = new SMSConversation
+                            {
+                                RowId = rowId,
+                                Guid = guid,
+                                ChatIdentifier = chatIdentifier,
+                                ServiceName = serviceName,
+                                HandleId = handleId,
+                                Messages = messages,
+                                TotalMessages = totalMessages
+                            };
+
+                            if (conversation.TotalMessages > 0)
+                            {
+                                // add the new conversation to the list of conversations
+                                conversations.Add(conversation);
+                            }
+
+                            // reset the temp value variables to null
+                            rowId = 0;
+                            guid = null;
+                            chatIdentifier = null;
+                            serviceName = null;
+                            handleId = 0;
                         }
-
-                        // reset the temp value variables to null
-                        rowId = 0;
-                        guid = null;
-                        chatIdentifier = null;
-                        serviceName = null;
-                        handleId = 0;
                     }
                 }
             }

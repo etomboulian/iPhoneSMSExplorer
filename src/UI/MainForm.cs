@@ -12,28 +12,34 @@ namespace iPhoneMessageExplorer
 {
     public partial class MainForm : Form
     {
-        private readonly ConversationViewModel conversationVM;
+        private static ConversationViewModel conversationVM;
+        private static bool isBindingSet{ get; set; }
         public MainForm()
         {
             InitializeComponent();
-            conversationVM = new ConversationViewModel();
+            //conversationVM = new ConversationViewModel();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            SetBindings();
+            //SetBindings();
             SetSearchButtonsVisible(false);
         }
 
         private void SetBindings()
         {
+            
             // set bindings for the conversations listbox
             listBoxConversations.DataSource = conversationVM.Conversations;
             listBoxConversations.DisplayMember = "ChatIdentifier";
 
             // Bindings for data labels
-            labelCountData.DataBindings.Add("Text", conversationVM, "ConversationCount");
-            labelMsgCountData.DataBindings.Add("Text", conversationVM, "SelectedConversationMessageCount", true, DataSourceUpdateMode.OnPropertyChanged, "N0");
+            if (!isBindingSet)
+            {
+                labelCountData.DataBindings.Add("Text", conversationVM, "ConversationCount");
+                labelMsgCountData.DataBindings.Add("Text", conversationVM, "SelectedConversationMessageCount", true, DataSourceUpdateMode.OnPropertyChanged, "N0");
+                isBindingSet = true;
+            }
         }
 
         // On change the selected item in the listbox, update the value in selectedConversation to the new selection
@@ -170,7 +176,7 @@ namespace iPhoneMessageExplorer
             }
             
             // try to set the selected folder path and show an error if it fails
-            if(!conversationVM.SetSelectedFolderPath(folderPath))
+            if(!conversationVM.SetSelectedDBFilePath(folderPath))
             {
                 MessageBox.Show("Unable to open the selected folder as it does not validate.");
             }
@@ -184,7 +190,7 @@ namespace iPhoneMessageExplorer
         private void aboutSMSExplorerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutDialog dialog = new AboutDialog();
-            dialog.Show();
+            dialog.ShowDialog(this);
             // show the about dialog
         }
         #endregion
@@ -201,8 +207,29 @@ namespace iPhoneMessageExplorer
         }
 
 
+
         #endregion
 
+        private void buttonOpenFile_Click(object sender, EventArgs e)
+        {
+            var fileContent = string.Empty;
+            var filePath = string.Empty;
 
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+                openFileDialog.Filter = "database files (*.db)|*.db|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog(this) == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    filePath = openFileDialog.FileName;
+                    conversationVM = new ConversationViewModel(filePath);
+                    SetBindings();
+                }
+            }
+        }
     }
 }

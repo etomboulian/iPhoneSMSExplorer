@@ -15,7 +15,7 @@ namespace iPhoneMessageExplorer
 {
     class ConversationViewModel : INotifyPropertyChanged
     {
-        #region ImplementINotifyPropertyChanged
+        #region Implement INotifyPropertyChanged Interface
 
         // Implement the INofityPropertyChanged Interface
         public event PropertyChangedEventHandler PropertyChanged;
@@ -26,7 +26,7 @@ namespace iPhoneMessageExplorer
 
         #endregion
 
-        #region SelectedConversationProperty
+        #region Selected Conversation
 
         // Create the conversations list and the corresponding binding source
         private readonly SMSConversationList conversations;
@@ -112,7 +112,7 @@ namespace iPhoneMessageExplorer
 
         #endregion
 
-        #region SearchMessage
+        #region Search Current Conversation
         
         public MatchCollection SearchMatches { get; set; }
         public int SearchPosition { get; set; }
@@ -136,7 +136,7 @@ namespace iPhoneMessageExplorer
 
         #endregion
 
-        #region ExportMessages
+        #region Export Messages
         // put the export messages core code in here (move out of mainform)
         public bool ExportCurrentConversationMessages(string outFilePath)
         {
@@ -168,16 +168,16 @@ namespace iPhoneMessageExplorer
 
         #endregion
 
-        #region OpenFileOrFolder
+        #region Open DB File
         // put the open file code and properties in here
-        public string SelectedFolderPath { get; private set; }
+        public string SelectedDBFilePath { get; private set; }
 
-        public bool SetSelectedFolderPath(string folderPath) 
+        public bool SetSelectedDBFilePath(string filePath) 
         {
             bool success = false;
-            if(validateFolderPath(folderPath))
+            if(validateFolderPath(filePath))
             {
-                SelectedFolderPath = folderPath;
+                SelectedDBFilePath = filePath;
                 success = true;
             }
             return success;
@@ -186,10 +186,10 @@ namespace iPhoneMessageExplorer
         #endregion
 
         // Conversation ViewModel Constructor
-        public ConversationViewModel()
+        public ConversationViewModel(string filePath)
         {
             // populate the conversation list and setup the BindingSource
-            conversations = SMSRepository.GetConversations();
+            conversations = SMSRepository.GetConversations(filePath);
 
             // create a BindingSource and point it at the retrieved conversation list
             Conversations = new BindingSource();
@@ -197,8 +197,6 @@ namespace iPhoneMessageExplorer
 
             // set the selected conversation to an empty object on start
             SelectedConversation = new SMSConversation();
-
-            // set the current db file to an empty object or null on start
         }
 
         #region HelperFunctions

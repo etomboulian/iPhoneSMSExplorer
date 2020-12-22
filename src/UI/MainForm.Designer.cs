@@ -46,7 +46,7 @@
             this.labelCountData = new System.Windows.Forms.Label();
             this.labelMsgCountData = new System.Windows.Forms.Label();
             this.labelMsgCount = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonOpenFile = new System.Windows.Forms.Button();
             this.buttonExportMessages = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -214,14 +214,15 @@
             this.labelMsgCount.TabIndex = 13;
             this.labelMsgCount.Text = "Message Count:";
             // 
-            // button1
+            // buttonOpenFile
             // 
-            this.button1.Location = new System.Drawing.Point(27, 32);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(202, 21);
-            this.button1.TabIndex = 15;
-            this.button1.Text = "Open File";
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonOpenFile.Location = new System.Drawing.Point(27, 32);
+            this.buttonOpenFile.Name = "buttonOpenFile";
+            this.buttonOpenFile.Size = new System.Drawing.Size(202, 21);
+            this.buttonOpenFile.TabIndex = 15;
+            this.buttonOpenFile.Text = "Open File";
+            this.buttonOpenFile.UseVisualStyleBackColor = true;
+            this.buttonOpenFile.Click += new System.EventHandler(this.buttonOpenFile_Click);
             // 
             // buttonExportMessages
             // 
@@ -239,7 +240,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 404);
             this.Controls.Add(this.buttonExportMessages);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.buttonOpenFile);
             this.Controls.Add(this.labelMsgCountData);
             this.Controls.Add(this.labelMsgCount);
             this.Controls.Add(this.labelCountData);
@@ -285,7 +286,7 @@
         private System.Windows.Forms.Label labelCountData;
         private System.Windows.Forms.Label labelMsgCountData;
         private System.Windows.Forms.Label labelMsgCount;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonOpenFile;
         private System.Windows.Forms.Button buttonExportMessages;
     }
 }
