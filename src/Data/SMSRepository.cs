@@ -13,20 +13,19 @@ namespace iPhoneMessageExplorer.Data
     class SMSRepository
     {
         // Set the database filename and connection string values
-        private static string fileName = "3d0d7e5fb2ce288813306e4d4636395e047a3d28";
-        public static string connString = $"Data Source=C:\\Users\\etomb\\source\\repos\\iPhoneMessageExplorer\\src\\db_files\\{fileName}";
+        public static string filePath;
 
         /// <summary>
         /// Gets the full list of SMS conversations from the iPhone SMS db file
         /// </summary>
         /// <returns>A populated list of the SMS Conversations in the SMS DB file</returns>
-        public static SMSConversationList GetConversations(string dbFilePath = null)
+        public static SMSConversationList GetConversations()
         {
             SMSConversationList conversations = new SMSConversationList();
-            if (!(dbFilePath is null))
+            if (!(filePath is null))
             {
                 // setup the conversation list and sql
-                
+                string connString = $"Data Source={filePath}";
 
                 string sql = @"select 
                         c.ROWID, 
@@ -126,6 +125,7 @@ namespace iPhoneMessageExplorer.Data
         public static void GetMessages(SMSConversation conversation)
         {
             conversation.Messages = new SMSMessageList();
+            string connString = $"Data Source={filePath}";
             string sql = @"select m.guid, m.text, m.handle_id, m.service, m.account, m.account_guid,
                             datetime(m.date/1000000000 + strftime('%s', '2001-01-01') ,'unixepoch','localtime') as date,
                             m.is_from_me, m.cache_has_attachments

@@ -21,6 +21,7 @@ namespace iPhoneMessageExplorer
         #endregion
 
         #region Initialization
+
         public MainForm()
         {
             InitializeComponent();
@@ -47,6 +48,7 @@ namespace iPhoneMessageExplorer
                 isBindingSet = true;
             }
         }
+
         #endregion
 
         #region UI Event Handlers
@@ -64,6 +66,7 @@ namespace iPhoneMessageExplorer
             // set the conversation pane content to the messages for the selected conversation
             textBoxMessages.Text = conversationVM.getCurrentConversationMessages();
         }
+
         #endregion
 
         #region Button Event Handlers
@@ -197,6 +200,7 @@ namespace iPhoneMessageExplorer
         #endregion
 
         #region ToolStrip Menu Actions
+
         private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string folderPath = "";
@@ -226,6 +230,7 @@ namespace iPhoneMessageExplorer
             dialog.ShowDialog(this);
             // show the about dialog
         }
+
         #endregion
 
         #region Helper Functions

@@ -105,7 +105,7 @@ namespace iPhoneMessageExplorer
 
         #endregion
 
-        #region CalculatedConversationProperties
+        #region Calculated Conversation Properties
 
         public int ConversationCount => Conversations.Count;
         public int SelectedConversationMessageCount => SelectedConversation.Messages.Count;
@@ -169,6 +169,7 @@ namespace iPhoneMessageExplorer
         #endregion
 
         #region Open DB File
+
         // the selected DB file path property
         public string SelectedDBFilePath { get; private set; }
 
@@ -178,7 +179,9 @@ namespace iPhoneMessageExplorer
             bool success = false;
             if(validateFilePath(filePath))
             {
-                SelectedDBFilePath = filePath;
+                // perhaps remove this???
+                SelectedDBFilePath = filePath; // <--
+                SMSRepository.filePath = filePath;
                 success = true;
             }
             return success;
@@ -191,12 +194,15 @@ namespace iPhoneMessageExplorer
         // Conversation ViewModel Constructor
         public ConversationViewModel(string filePath)
         {
-            // populate the conversation list and setup the BindingSource
-            conversations = SMSRepository.GetConversations(filePath);
+            if (SetSelectedDBFilePath(filePath))
+            {
+                // populate the conversation list and setup the BindingSource
+                conversations = SMSRepository.GetConversations();
 
-            // create a BindingSource and point it at the retrieved conversation list
-            Conversations = new BindingSource();
-            Conversations.DataSource = conversations;
+                // create a BindingSource and point it at the retrieved conversation list
+                Conversations = new BindingSource();
+                Conversations.DataSource = conversations;
+            }
 
             // set the selected conversation to an empty object on start
             SelectedConversation = new SMSConversation();
