@@ -169,13 +169,14 @@ namespace iPhoneMessageExplorer
         #endregion
 
         #region Open DB File
-        // put the open file code and properties in here
+        // the selected DB file path property
         public string SelectedDBFilePath { get; private set; }
 
+        // custom public setting for selected DB file path
         public bool SetSelectedDBFilePath(string filePath) 
         {
             bool success = false;
-            if(validateFolderPath(filePath))
+            if(validateFilePath(filePath))
             {
                 SelectedDBFilePath = filePath;
                 success = true;
@@ -184,6 +185,8 @@ namespace iPhoneMessageExplorer
         }
 
         #endregion
+
+        #region Initialization
 
         // Conversation ViewModel Constructor
         public ConversationViewModel(string filePath)
@@ -199,11 +202,18 @@ namespace iPhoneMessageExplorer
             SelectedConversation = new SMSConversation();
         }
 
+        #endregion
+
         #region HelperFunctions
 
-        private bool validateFolderPath(string folderPath)
+        /// <summary>
+        /// Validates the selected Database file to ensure that it is suitable to attempt to open
+        /// </summary>
+        /// <param name="filePath">The file path to attempt to validate</param>
+        /// <returns>Indicates whether the file path is valid or not</returns>
+        private bool validateFilePath(string filePath)
         {
-            if (!File.Exists(folderPath))
+            if (!File.Exists(filePath))
             {
                 return false;
             }

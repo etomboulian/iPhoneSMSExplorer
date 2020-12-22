@@ -12,8 +12,15 @@ namespace iPhoneMessageExplorer
 {
     public partial class MainForm : Form
     {
+
+        #region Main Form Properties
+
         private static ConversationViewModel conversationVM;
         private static bool isBindingSet{ get; set; }
+
+        #endregion
+
+        #region Initialization
         public MainForm()
         {
             InitializeComponent();
@@ -22,7 +29,6 @@ namespace iPhoneMessageExplorer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            //SetBindings();
             SetSearchButtonsVisible(false);
         }
 
@@ -41,6 +47,9 @@ namespace iPhoneMessageExplorer
                 isBindingSet = true;
             }
         }
+        #endregion
+
+        #region UI Event Handlers
 
         // On change the selected item in the listbox, update the value in selectedConversation to the new selection
         private void listBoxConversations_SelectedIndexChanged(object sender, EventArgs e)
@@ -55,8 +64,32 @@ namespace iPhoneMessageExplorer
             // set the conversation pane content to the messages for the selected conversation
             textBoxMessages.Text = conversationVM.getCurrentConversationMessages();
         }
+        #endregion
 
-        #region BUTTON_ACTIONS
+        #region Button Event Handlers
+
+        private void buttonOpenFile_Click(object sender, EventArgs e)
+        {
+            var fileContent = string.Empty;
+            var filePath = string.Empty;
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
+                openFileDialog.Filter = "database files (*.db)|*.db|All files (*.*)|*.*";
+                openFileDialog.FilterIndex = 2;
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog(this) == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    filePath = openFileDialog.FileName;
+                    conversationVM = new ConversationViewModel(filePath);
+                    SetBindings();
+                }
+            }
+        }
+
         private void buttonSearch_Click(object sender, EventArgs e)
         {
             string searchText = textBoxSearch.Text;
@@ -163,7 +196,7 @@ namespace iPhoneMessageExplorer
 
         #endregion
 
-        #region ToolStripMenuAction
+        #region ToolStrip Menu Actions
         private void openFolderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string folderPath = "";
@@ -195,7 +228,7 @@ namespace iPhoneMessageExplorer
         }
         #endregion
 
-        #region HELPER_FUNCTIONS
+        #region Helper Functions
 
         private void SetSearchButtonsVisible(bool visible)
         {
@@ -206,30 +239,7 @@ namespace iPhoneMessageExplorer
             textBoxSearch.Enabled = !visible;
         }
 
-
-
         #endregion
-
-        private void buttonOpenFile_Click(object sender, EventArgs e)
-        {
-            var fileContent = string.Empty;
-            var filePath = string.Empty;
-
-            using (OpenFileDialog openFileDialog = new OpenFileDialog())
-            {
-                openFileDialog.InitialDirectory = Directory.GetCurrentDirectory();
-                openFileDialog.Filter = "database files (*.db)|*.db|All files (*.*)|*.*";
-                openFileDialog.FilterIndex = 2;
-                openFileDialog.RestoreDirectory = true;
-
-                if (openFileDialog.ShowDialog(this) == DialogResult.OK)
-                {
-                    //Get the path of specified file
-                    filePath = openFileDialog.FileName;
-                    conversationVM = new ConversationViewModel(filePath);
-                    SetBindings();
-                }
-            }
-        }
+        
     }
 }
